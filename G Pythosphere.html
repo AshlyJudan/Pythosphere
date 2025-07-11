@@ -1,0 +1,691 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pythosphere - Unlocking the World of PYTHA</title>
+    <!-- Tailwind CSS CDN -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Google Fonts - Inter (for general text) and Space Mono (for logo) -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+    <!-- Three.js CDN for 3D globe -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+            transition: background-color 0.3s ease;
+        }
+        /* Custom font for Pythosphere logo with slimmer look */
+        .font-pythosphere {
+            font-family: 'Space Mono', monospace;
+            font-weight: 100; /* Space Mono's lightest available weight */
+            color: #fffb00; /* Solid gold color */
+            text-shadow:
+                0 0 1px rgba(255, 215, 0, 0.2), /* Even subtler glow */
+                0 0 3px rgba(255, 215, 0, 0.05); /* Very soft, wider glow */
+        }
+        /* Custom scrollbar for a cleaner look */
+        ::-webkit-scrollbar {
+            width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #3a3a3a; /* Darker navy track */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #95970e; /* Gold thumb */
+            border-radius: 10px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #ffee02; /* gold on hover */
+        }
+
+        /* Custom animation for subtle glow on elements */
+        @keyframes glow {
+            0% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+            50% { box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); }
+            100% { box-shadow: 0 0 5px rgba(255, 215, 0, 0.2); }
+        }
+        .glow-on-hover:hover {
+            animation: glow 1.5s infinite alternate;
+        }
+
+        /* Styles for the hide-on-scroll header */
+        .header-slide {
+            position: fixed; /* Make it fixed to control its position */
+            top: 0;
+            width: 100%;
+            transform: translateY(0); /* Default position */
+            transition: transform 0.3s ease-out; /* Smooth transition for sliding */
+        }
+
+        .header-slide.hidden-header {
+            transform: translateY(-100%); /* Slide up and hide */
+        }
+
+        /* Hint to browser for smoother transform animations */
+        #pythosphere-icon {
+            will-change: transform;
+            transition: transform 0.7s ease-in-out; /* Smooth transition for icon movement */
+        }
+
+        /* Dropdown specific styles (these will now be unused but are kept for reference if needed later) */
+        .dropdown-menu {
+            display: none;
+            position: absolute;
+            background-color: #1A2B4C; /* Darker navy for dropdown background */
+            min-width: 160px;
+            box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+            z-index: 100; /* Ensure it's above other content */
+            border-radius: 0.5rem; /* Rounded corners */
+            padding: 0.5rem 0; /* Padding inside dropdown */
+            top: 100%; /* Position below the parent link */
+            left: 0;
+        }
+
+        .dropdown:hover .dropdown-menu {
+            display: block;
+        }
+
+        .dropdown-menu a {
+            color: #yellow-300; /* Text color for dropdown items */
+            padding: 0.75rem 1rem;
+            text-decoration: none;
+            display: block;
+            text-align: left;
+            transition: background-color 0.3s ease;
+        }
+
+        .dropdown-menu a:hover {
+            background-color: #0A1931; /* Even darker navy on hover */
+            color: #yellow-500;
+        }
+    </style>
+</head>
+<body class="bg-[#0A1931] text-yellow-400"> <!-- Deep Navy Blue background, Muted Golden text -->
+
+    <!-- Header Section -->
+    <header id="main-header" class="bg-black shadow-xl py-4 px-6 md:px-12 z-50 rounded-b-lg header-slide relative overflow-hidden glow-on-hover"> <!-- Black background for header, relative for canvas positioning -->
+        <!-- Canvas for animated drawings -->
+        <canvas id="header-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+        <nav class="container mx-auto flex justify-between items-center relative z-10"> <!-- z-10 to keep nav above canvas -->
+            <!-- Logo and Text Container -->
+            <div class="flex items-center"> <!-- Removed space-x-2 to manually control spacing -->
+                <!-- Pythosphere Full-Sphere Logo with Golden Outline -->
+                <svg id="pythosphere-icon" class="w-9 h-9 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <circle cx="12" cy="12" r="10" fill="none" stroke="#FFD700" stroke-width="2"/> <!-- Changed to circle with golden outline -->
+                </svg>
+                <a id="pythosphere-text" href="#" class="text-2xl md:text-3xl font-pythosphere">Pythosphere</a>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">Home</a>
+
+                <!-- About Us Link (no dropdown) -->
+                <a href="#about" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">About Us</a>
+
+                <a href="#courses" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">Our Programs</a>
+                <a href="#collaboration" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">Application Form</a>
+                <a href="#contact" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">Contact Us</a>
+            </div>
+            <!-- Mobile Menu Button -->
+            <button id="mobile-menu-button" class="md:hidden p-2 rounded-md text-yellow-100 hover:bg-[#1A2B4C] focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+                </svg>
+            </button>
+        </nav>
+        <!-- Mobile Menu Overlay -->
+        <div id="mobile-menu" class="hidden md:hidden fixed inset-0 bg-[#0A1931] bg-opacity-95 z-40 flex flex-col items-center justify-center space-y-6 text-xl">
+            <button id="close-mobile-menu" class="absolute top-4 right-4 p-2 rounded-md text-yellow-100 hover:bg-[#1A2B4C] focus:outline-none focus:ring-2 focus:ring-yellow-500">
+                <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <a href="#home" class="text-yellow-100 hover:text-yellow-500 font-medium transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Home</a>
+            <a href="#about" class="text-yellow-100 hover:text-yellow-500 font-medium transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">About Us</a>
+            <a href="#courses" class="text-yellow-100 hover:text-yellow-500 font-medium transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Our Program</a>
+            <a href="#collaboration" class="text-yellow-100 hover:text-yellow-500 font-medium transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Application Form</a>
+            <a href="#contact" class="text-yellow-100 hover:text-yellow-500 font-medium transition duration-300" onclick="document.getElementById('mobile-menu').classList.add('hidden')">Contact Us</a>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="relative bg-[#0A1931] text-yellow-400 py-24 md:py-40 overflow-hidden rounded-b-3xl shadow-2xl glow-on-hover">
+        <!-- Canvas for 3D solar system animation -->
+        <canvas id="solar-system-canvas" class="absolute inset-0 w-full h-full pointer-events-none z-0"></canvas>
+
+        <div class="absolute inset-0 opacity-15">
+            <!-- Background pattern for visual appeal (still present but under the solar system) -->
+            <svg class="w-full h-full" fill="none" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid slice">
+                <pattern id="pattern-circles" x="0" y="0" width="10" height="10" patternUnits="userSpaceOnUse">
+                    <circle cx="5" cy="5" r="1" fill="rgba(255,215,0,0.1)"/>
+                </pattern>
+                <rect x="0" y="0" width="100%" height="100%" fill="url(#pattern-circles)"/>
+            </svg>
+        </div>
+        <div class="container mx-auto text-center relative z-10 px-4">
+            <h1 class="text-4xl md:text-6xl font-extrabold leading-tight mb-6 animate-fade-in-down text-yellow-500 drop-shadow-lg">
+                Unlock the World of PYTHA
+            </h1>
+            <p class="text-lg md:text-xl mb-10 max-w-3xl mx-auto opacity-90 text-yellow-200 animate-fade-in-up">
+                Your premier destination for mastering PYTHA, proudly collaborating with the <span class="font-semibold text-yellow-400">Surabhi Module</span> for holistic learning.
+            </p>
+            <a href="#courses" class="inline-block bg-yellow-500 text-[#0A1931] hover:bg-yellow-600 px-10 py-4 rounded-full text-lg font-semibold shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                Explore Our Programs
+            </a>
+        </div>
+    </section>
+
+    <!-- About Us Section -->
+    <section id="about" class="py-20 md:py-32 bg-[#102038]"> <!-- Deeper section background -->
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">About Pythosphere</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="md:w-1/2">
+                    <p class="text-lg leading-relaxed mb-6 text-yellow-200">
+                        Pythosphere is a pioneering educational institution dedicated to providing comprehensive and in-depth training in <span class="font-semibold text-yellow-400">PYTHA</span>. Our mission is to empower students with the foundational knowledge and advanced skills necessary to excel in complex analytical and computational fields. We believe in fostering a learning environment that is both rigorous and supportive, ensuring every student reaches their full potential.
+                    </p>
+                    <p class="text-lg leading-relaxed text-yellow-200">
+                        Our curriculum is meticulously designed by industry experts and educators, focusing on practical application and real-world problem-solving. We are committed to delivering excellence through innovative teaching methodologies, personalized mentorship, and a vibrant community that encourages continuous growth and exploration.
+                    </p>
+                </div>
+                <div class="md:w-1/2 flex justify-center">
+                    <img src="https://placehold.co/500x350/0A1931/FFD700?text=About+Us" alt="About Pythosphere" class="rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover"> <!-- More rounded, stronger shadow, glow -->
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Courses Section -->
+    <section id="courses" class="py-20 md:py-32 bg-[#0A1931]"> <!-- Primary dark navy background -->
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">Our Program</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- PYTHA Foundation -->
+                <div class="bg-[#102038] rounded-2xl shadow-xl p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                    <div class="bg-[#1A2B4C] p-5 rounded-full mb-6 shadow-md"> <!-- Darker navy for icon background, larger padding -->
+                        <svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-yellow-100 mb-4">PYTHA Foundation</h3>
+                    <p class="text-yellow-300 mb-6">
+                        Build a strong base with core PYTHA concepts, syntax, and fundamental problem-solving techniques. Ideal for beginners.
+                    </p>
+                    <a href="#" class="text-yellow-500 hover:text-yellow-600 font-semibold flex items-center">
+                        Learn More
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </div>
+
+                <!-- PYTHA Advanced -->
+                <div class="bg-[#102038] rounded-2xl shadow-xl p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                    <div class="bg-[#1A2B4C] p-5 rounded-full mb-6 shadow-md">
+                        <svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path fill-rule="evenodd" d="M3 3a1 1 0 000 2v8a2 2 0 002 2h2.586l-1.293 1.293a1 1 0 001.414 1.414L10 15.414l2.293 2.293a1 1 0 001.414-1.414L12.414 15H15a2 2 0 002-2V5a1 1 0 100-2H3zm11.707 4.707a1 1 0 00-1.414-1.414L10 9.586 7.707 7.293a1 1 0 00-1.414 1.414L8.586 11l-2.293 2.293a1 1 0 001.414 1.414L10 12.414l2.293 2.293a1 1 0 001.414-1.414L11.414 11l2.293-2.293z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-yellow-100 mb-4">PYTHA Advanced</h3>
+                    <p class="text-yellow-300 mb-6">
+                        Dive deep into advanced PYTHA topics, complex algorithms, data structures, and optimization techniques.
+                    </p>
+                    <a href="#" class="text-yellow-500 hover:text-yellow-600 font-semibold flex items-center">
+                        Learn More
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </div>
+
+                <!-- PYTHA Specializations -->
+                <div class="bg-[#102038] rounded-2xl shadow-xl p-8 flex flex-col items-center text-center transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                    <div class="bg-[#1A2B4C] p-5 rounded-full mb-6 shadow-md">
+                        <svg class="w-10 h-10 text-yellow-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M10 12a2 2 0 100-4 2 2 0 000 4z"></path>
+                            <path fill-rule="evenodd" d="M.458 10C1.732 5.943 5.522 3 10 3s8.268 2.943 9.542 7c-1.274 4.057-5.064 7-9.542 7S1.732 14.057.458 10zM14 10a4 4 0 11-8 0 4 4 0 018 0z" clip-rule="evenodd"></path>
+                        </svg>
+                    </div>
+                    <h3 class="text-2xl font-semibold text-yellow-100 mb-4">PYTHA Specializations</h3>
+                    <p class="text-yellow-300 mb-6">
+                        Focus on specific areas like PYTHA for Data Science, AI, or Web Development. Tailored learning paths.
+                    </p>
+                    <a href="#" class="text-yellow-500 hover:text-yellow-600 font-semibold flex items-center">
+                        Learn More
+                        <svg class="w-4 h-4 ml-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7"></path></svg>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Surabhi Module Collaboration Section -->
+    <section id="collaboration" class="py-20 md:py-32 bg-[#102038]"> <!-- Deeper section background -->
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">Application Form</h2>
+            <div class="flex flex-col md:flex-row items-center justify-center gap-12">
+                <div class="md:w-1/2 flex justify-center order-2 md:order-1">
+                    <img src="https://placehold.co/500x350/0A1931/FFD700?text=Application+Form" alt="Application Form" class="rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                </div>
+                <div class="md:w-1/2 order-1 md:order-2">
+                    <p class="text-lg leading-relaxed mb-6 text-yellow-200">
+                        Ready to join Pythosphere and unlock your potential in PYTHA? Fill out our application form to get started. Our collaboration with the <span class="font-semibold text-yellow-400">Surabhi Module</span> for holistic learning.
+                    </p>
+                    <p class="text-lg leading-relaxed mb-6 text-yellow-200">
+                        The application process is simple and designed to help us understand your aspirations and how we can best support your learning goals. We look forward to welcoming you to our community!
+                    </p>
+                    <a href="#" class="inline-block bg-yellow-500 text-[#0A1931] hover:bg-yellow-600 px-8 py-3 rounded-full text-lg font-semibold shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                        Submit Your Application
+                    </a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-20 md:py-32 bg-[#0A1931]"> <!-- Primary dark navy background -->
+        <div class="container mx-auto px-6 md:px-12">
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">Contact Us</h2>
+            <div class="max-w-3xl mx-auto bg-[#102038] rounded-2xl shadow-xl p-8 md:p-12"> <!-- Deeper navy for contact form -->
+                <form class="space-y-6">
+                    <div>
+                        <label for="name" class="block text-lg font-medium text-yellow-200 mb-2">Your Name</label>
+                        <input type="text" id="name" name="name" class="mt-1 block w-full px-4 py-3 border border-[#1A2B4C] bg-[#0A1931] text-yellow-100 rounded-lg shadow-inner focus:ring-yellow-500 focus:border-yellow-500 sm:text-lg"> <!-- Darker border, inner shadow -->
+                    </div>
+                    <div>
+                        <label for="email" class="block text-lg font-medium text-yellow-200 mb-2">Email Address</label>
+                        <input type="email" id="email" name="email" class="mt-1 block w-full px-4 py-3 border border-[#1A2B4C] bg-[#0A1931] text-yellow-100 rounded-lg shadow-inner focus:ring-yellow-500 focus:border-yellow-500 sm:text-lg">
+                    </div>
+                    <div>
+                        <label for="message" class="block text-lg font-medium text-yellow-200 mb-2">Your Message</label>
+                        <textarea id="message" name="message" rows="5" placeholder="Tell us about your query..." class="mt-1 block w-full px-4 py-3 border border-[#1A2B4C] bg-[#0A1931] text-yellow-100 rounded-lg shadow-inner focus:ring-yellow-500 focus:border-yellow-500 sm:text-lg"></textarea>
+                    </div>
+                    <div class="text-center">
+                        <button type="submit" class="inline-block bg-yellow-500 text-[#0A1931] hover:bg-yellow-600 px-8 py-3 rounded-full text-lg font-semibold shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover">
+                            Send Message
+                        </button>
+                    </div>
+                </form>
+                <div class="mt-12 text-center text-yellow-300">
+                    <p class="text-lg mb-2"><strong>Address:</strong> PYTHOSPHERE, 2nd Floor Surabhi Module, Vallathol Junction, Seaport-Airport road, Kakkanad, Kochi, India</p>
+                    <p class="text-lg mb-2"><strong>Phone:</strong> 7034464621</p>
+                    <p class="text-lg"><strong>Email:</strong> info.pythosphere@gmail.com</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer Section -->
+    <footer class="bg-[#0A1931] text-white py-8 px-6 md:px-12 rounded-t-2xl shadow-inner"> <!-- Primary dark navy background, more rounded -->
+        <div class="container mx-auto text-center">
+            <div class="flex flex-col md:flex-row justify-between items-center mb-6">
+                <div class="mb-4 md:mb-0">
+                    <h3 class="text-xl font-bold text-yellow-300">Pythosphere</h3>
+                    <p class="text-yellow-400 text-sm">Empowering Minds with PYTHA</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="text-yellow-300 hover:text-yellow-500 transition duration-300">Home</a>
+                    <a href="#about" class="text-yellow-300 hover:text-yellow-500 transition duration-300">About</a>
+                    <a href="#courses" class="text-yellow-300 hover:text-yellow-500 transition duration-300">Our Program</a>
+                    <a href="#contact" class="text-yellow-300 hover:text-yellow-500 transition duration-300">Contact Us</a>
+                </div>
+            </div>
+            <hr class="border-[#1A2B4C] mb-6"> <!-- Darker navy border -->
+            <p class="text-yellow-500 text-sm">&copy; 2025 Pythosphere. All rights reserved. | In collaboration with Surabhi Module</p>
+        </div>
+    </footer>
+
+    <script>
+        // Smooth scrolling for navigation links
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                document.querySelector(this.getAttribute('href')).scrollIntoView({
+                    behavior: 'smooth'
+                });
+            });
+        });
+
+        // Mobile menu toggle functionality
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        const closeMobileMenuButton = document.getElementById('close-mobile-menu');
+
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+
+        closeMobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.add('hidden');
+        });
+
+        // Close mobile menu when a link is clicked
+        mobileMenu.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', () => {
+                mobileMenu.classList.add('hidden');
+            });
+        });
+
+        // Hide on scroll header logic
+        const mainHeader = document.getElementById('main-header');
+        let lastScrollTop = 0; // Variable to store the last scroll position
+
+        window.addEventListener('scroll', () => {
+            let currentScroll = window.pageYOffset || document.documentElement.scrollTop;
+
+            if (currentScroll > lastScrollTop && currentScroll > mainHeader.offsetHeight) {
+                // Scrolling down and past the header height
+                mainHeader.classList.add('hidden-header');
+            } else if (currentScroll < lastScrollTop) {
+                // Scrolling up
+                mainHeader.classList.remove('hidden-header');
+            }
+            lastScrollTop = currentScroll <= 0 ? 0 : currentScroll; // For Mobile or negative scrolling
+        });
+
+        // Helper function to generate points for a circle (polygon approximation)
+        function getCirclePoints(radius, segments) {
+            const points = [];
+            for (let i = 0; i < segments; i++) {
+                const angle = (i / segments) * Math.PI * 2;
+                points.push({
+                    x: radius * Math.cos(angle),
+                    y: radius * Math.sin(angle)
+                });
+            }
+            if (segments > 0) {
+                points.push({
+                    x: radius * Math.cos(0),
+                    y: radius * Math.sin(0)
+                });
+            }
+            return points;
+        }
+
+        // Define simple geometric shapes as arrays of points (centered around 0,0) for header animation
+        const shapes = [
+            // Square (30x30, centered)
+            [ {x: -15, y: -15}, {x: 15, y: -15}, {x: 15, y: 15}, {x: -15, y: 15}, {x: -15, y: -15} ],
+            // Triangle (base 30, height approx 26, centered)
+            [ {x: 0, y: -15}, {x: 15, y: 15}, {x: -15, y: 15}, {x: 0, y: -15} ],
+            // Circle (radius 15, 16 segments)
+            getCirclePoints(15, 16),
+            // Ring (larger circle, radius 20, 20 segments)
+            getCirclePoints(20, 20)
+        ];
+
+        // Function to create and manage a particle system for a given canvas (for header)
+        function createParticleSystem(canvasId, containerElement) {
+            const canvas = document.getElementById(canvasId);
+            const ctx = canvas.getContext('2d');
+            let particles = [];
+            const numberOfParticles = 20;
+
+            class Particle {
+                constructor() {
+                    this.shape = shapes[Math.floor(Math.random() * shapes.length)];
+                    this.x = Math.random() * canvas.width;
+                    this.y = Math.random() * canvas.height;
+                    this.vx = (Math.random() - 0.5) * 0.5;
+                    this.vy = (Math.random() - 0.5) * 0.5;
+                    this.opacity = Math.random() * 0.5 + 0.2;
+                    this.scale = Math.random() * 0.5 + 0.5;
+                    this.rotation = Math.random() * Math.PI * 2;
+                    this.rotationSpeed = (Math.random() - 0.5) * 0.005;
+                }
+
+                draw() {
+                    ctx.save();
+                    ctx.translate(this.x, this.y);
+                    ctx.scale(this.scale, this.scale);
+                    ctx.rotate(this.rotation);
+
+                    ctx.strokeStyle = `rgba(255, 255, 255, ${this.opacity})`;
+                    ctx.lineWidth = 1.5;
+                    ctx.lineJoin = 'round';
+                    ctx.lineCap = 'round';
+
+                    ctx.beginPath();
+                    if (this.shape.length > 0) {
+                        ctx.moveTo(this.shape[0].x, this.shape[0].y);
+                        for (let i = 1; i < this.shape.length; i++) {
+                            ctx.lineTo(this.shape[i].x, this.shape[i].y);
+                        }
+                    }
+                    ctx.stroke();
+                    ctx.restore();
+                }
+
+                update() {
+                    this.x += this.vx;
+                    this.y += this.vy;
+                    this.rotation += this.rotationSpeed;
+
+                    if (this.x > canvas.width + 50) this.x = -50;
+                    if (this.x < -50) this.x = canvas.width + 50;
+                    if (this.y > canvas.height + 50) this.y = -50;
+                    if (this.y < -50) this.y = canvas.height + 50;
+                }
+            }
+
+            function resizeParticles() {
+                canvas.width = containerElement.offsetWidth;
+                canvas.height = containerElement.offsetHeight;
+                particles = [];
+                for (let i = 0; i < numberOfParticles; i++) {
+                    particles.push(new Particle());
+                }
+            }
+
+            function animateParticles() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                particles.forEach(particle => {
+                    particle.update();
+                    particle.draw();
+                });
+                requestAnimationFrame(animateParticles);
+            }
+
+            return {
+                resize: resizeParticles,
+                animate: animateParticles
+            };
+        }
+
+        // Three.js Solar System Animation for Hero Section
+        let scene, camera, renderer, solarSystemGroup;
+        let mouseX = 0, mouseY = 0;
+        let targetRotationX = 0;
+        let targetRotationY = 0;
+        const windowHalfX = window.innerWidth / 2;
+        const windowHalfY = window.innerHeight / 2;
+
+        const planets = []; // Array to hold planet objects
+
+        function initSolarSystem() {
+            const container = document.getElementById('home');
+            const canvas = document.getElementById('solar-system-canvas');
+
+            // Scene
+            scene = new THREE.Scene();
+
+            // Camera
+            camera = new THREE.PerspectiveCamera(40, container.offsetWidth / container.offsetHeight, 0.1, 1000);
+            // Adjusted camera position for a top-down view and to place it behind the button
+            camera.position.set(0, 90, 800); // Increased Z-position to move camera further back
+            camera.lookAt(0, 0, 0); // Make camera look at the origin (center of solar system)
+
+            // Renderer
+            renderer = new THREE.WebGLRenderer({ canvas: canvas, alpha: true, antialias: true });
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
+            renderer.setPixelRatio(window.devicePixelRatio);
+
+            // Lights
+            const ambientLight = new THREE.AmbientLight(0x404040, 0.5); // Soft white ambient light
+            scene.add(ambientLight);
+
+            // Sun Light (point light for a glowing effect)
+            const sunLight = new THREE.PointLight(0xffffff, 1, 0, 2); // White light, intensity 1
+            sunLight.position.set(0, 0, 0);
+            scene.add(sunLight);
+
+            solarSystemGroup = new THREE.Group();
+
+            // Sun
+            const sunGeometry = new THREE.SphereGeometry(120, 32, 32); // Increased sun radius significantly
+            const sunMaterial = new THREE.MeshBasicMaterial({ color: 0xFFD700, transparent: true, opacity: 0.3 }); // Golden, reduced opacity
+            const sun = new THREE.Mesh(sunGeometry, sunMaterial);
+            solarSystemGroup.add(sun);
+
+            // Planets and Orbits
+            const planetData = [
+                { radius: 30, color: 0xff0000, orbitRadius: 240, orbitSpeed: 0.005 }, // Increased radius and orbit
+                { radius: 40, color: 0x00ff00, orbitRadius: 360, orbitSpeed: 0.003 }, // Increased radius and orbit
+                { radius: 35, color: 0x0000ff, orbitRadius: 480, orbitSpeed: 0.002 }, // Increased radius and orbit
+                { radius: 25, color: 0x800080, orbitRadius: 600, orbitSpeed: 0.0015 } // Increased radius and orbit
+            ];
+
+            planetData.forEach(data => {
+                // Planet
+                const planetGeometry = new THREE.SphereGeometry(data.radius, 16, 16);
+                const planetMaterial = new THREE.MeshPhongMaterial({
+                    color: data.color,
+                    specular: 0xAAAAAA,
+                    shininess: 50,
+                    transparent: true,
+                    opacity: 0.7 // Transparent planets
+                });
+                const planet = new THREE.Mesh(planetGeometry, planetMaterial);
+                planet.orbitRadius = data.orbitRadius;
+                planet.orbitSpeed = data.orbitSpeed;
+                planet.angle = Math.random() * Math.PI * 2; // Initial random position in orbit
+                planets.push(planet);
+                solarSystemGroup.add(planet);
+
+                // Orbit (LineLoop)
+                const orbitGeometry = new THREE.BufferGeometry();
+                const points = [];
+                const segments = 64;
+                for (let i = 0; i <= segments; i++) {
+                    const theta = (i / segments) * Math.PI * 2;
+                    points.push(new THREE.Vector3(data.orbitRadius * Math.cos(theta), 0, data.orbitRadius * Math.sin(theta)));
+                }
+                orbitGeometry.setFromPoints(points);
+                const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.3 }); // Faint orbit lines
+                const orbit = new THREE.LineLoop(orbitGeometry, orbitMaterial);
+                solarSystemGroup.add(orbit);
+            });
+
+            // Position the entire solar system group vertically
+            solarSystemGroup.position.y = 0; // Centered vertically relative to the new depth
+
+            scene.add(solarSystemGroup);
+
+            // Mouse interaction for rotation
+            document.addEventListener('mousemove', onDocumentMouseMove, false);
+            document.addEventListener('touchmove', onDocumentTouchMove, false);
+
+            // Initial resize
+            onSolarSystemResize();
+        }
+
+        function onSolarSystemResize() {
+            const container = document.getElementById('home');
+            if (camera && renderer && container) {
+                camera.aspect = container.offsetWidth / container.offsetHeight;
+                camera.updateProjectionMatrix();
+                renderer.setSize(container.offsetWidth, container.offsetHeight);
+                // Keep centered vertically on resize
+                solarSystemGroup.position.y = 0;
+            }
+        }
+
+        function onDocumentMouseMove(event) {
+            mouseX = (event.clientX - windowHalfX);
+            mouseY = (event.clientY - windowHalfY);
+        }
+
+        function onDocumentTouchMove(event) {
+            if (event.touches.length === 1) {
+                event.preventDefault();
+                mouseX = (event.touches[0].pageX - windowHalfX);
+                mouseY = (event.touches[0].pageY - windowHalfY);
+            }
+        }
+
+        function animateSolarSystem() {
+            requestAnimationFrame(animateSolarSystem);
+
+            // Smoothly interpolate target rotations based on mouse position
+            targetRotationX += ( mouseX - targetRotationX ) * 0.00005;
+            targetRotationY += ( mouseY - targetRotationY ) * 0.00005;
+
+            // Apply overall rotation to the solar system group
+            // For top-down view, primarily rotate around Y-axis (vertical axis)
+            solarSystemGroup.rotation.y += 0.0005; // Slow continuous rotation
+            // Allow subtle tilt with mouse for X and Z axes
+            solarSystemGroup.rotation.x = (targetRotationY * 0.0005);
+            solarSystemGroup.rotation.z = (targetRotationX * 0.0005);
+
+
+            // Animate planets
+            planets.forEach(planet => {
+                planet.angle += planet.orbitSpeed;
+                planet.position.x = planet.orbitRadius * Math.cos(planet.angle);
+                planet.position.z = planet.orbitRadius * Math.sin(planet.angle);
+                planet.rotation.y += 0.01; // Self-rotation for planets
+            });
+
+            renderer.render(scene, camera);
+        }
+
+
+        // Initialize and start animations when window loads
+        window.onload = function() {
+            const headerParticleSystem = createParticleSystem('header-canvas', mainHeader);
+            headerParticleSystem.resize();
+            headerParticleSystem.animate();
+
+            initSolarSystem(); // Initialize solar system instead of globe
+            animateSolarSystem(); // Animate solar system
+        };
+
+        // Resize canvases when window is resized
+        window.addEventListener('resize', () => {
+            const headerParticleSystem = createParticleSystem('header-canvas', mainHeader); // Re-create to ensure correct context
+            headerParticleSystem.resize(); // Resize header particles
+
+            onSolarSystemResize(); // Resize Three.js solar system
+        });
+
+
+        // Logo hover effect
+        const pythosphereIcon = document.getElementById('pythosphere-icon');
+        const pythosphereText = document.getElementById('pythosphere-text');
+        const initialOffset = 60; // Increased to 60 for smoother and more backward movement
+
+        if (pythosphereIcon && pythosphereText) {
+            // Set initial position of the icon to be 'initialOffset' pixels to the left of the text's start
+            pythosphereIcon.style.transform = `translateX(-${initialOffset}px)`;
+
+            // Adjust the text's margin to compensate for the icon's negative transform,
+            // effectively placing the text 'initialOffset' pixels after the icon's visual start.
+            // pythosphereIcon.offsetWidth is used to account for the icon's own width.
+            pythosphereText.style.marginLeft = `${pythosphereIcon.offsetWidth + initialOffset}px`;
+
+
+            pythosphereIcon.addEventListener('mouseenter', () => {
+                // Calculate the width of the text dynamically
+                const textWidth = pythosphereText.offsetWidth;
+                // On hover, move the icon to the right by the text's width plus the initialOffset.
+                // This places the icon 'initialOffset' pixels after the end of the text.
+                pythosphereIcon.style.transform = `translateX(${textWidth + initialOffset}px)`;
+            });
+
+            pythosphereIcon.addEventListener('mouseleave', () => {
+                // On mouse leave, return the icon to its initial negative offset.
+                pythosphereIcon.style.transform = `translateX(-${initialOffset}px)`;
+            });
+        }
+    </script>
+</body>
+</html>
