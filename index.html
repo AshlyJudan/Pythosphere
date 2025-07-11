@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pythosphere - Unlocking the World of PYTHA</title>
+    <title>Pyosphere - Unlocking the World of PYTHA</title>
     <!-- Tailwind CSS CDN -->
     <script src="https://cdn.tailwindcss.com"></script>
     <!-- Google Fonts - Inter (for general text) and Space Mono (for logo) -->
@@ -15,8 +15,8 @@
             font-family: 'Inter', sans-serif;
             transition: background-color 0.3s ease;
         }
-        /* Custom font for Pythosphere logo with slimmer look */
-        .font-pythosphere {
+        /* Custom font for Pyosphere logo with slimmer look */
+        .font-pythosphere { /* Retaining class name for now to avoid breaking existing styles, but note the name */
             font-family: 'Space Mono', monospace;
             font-weight: 100; /* Space Mono's lightest available weight */
             color: #fffb00; /* Solid gold color */
@@ -64,7 +64,7 @@
         }
 
         /* Hint to browser for smoother transform animations */
-        #pythosphere-icon {
+        #pythosphere-icon { /* Retaining ID name for now */
             will-change: transform;
             transition: transform 0.7s ease-in-out; /* Smooth transition for icon movement */
         }
@@ -88,7 +88,7 @@
         }
 
         .dropdown-menu a {
-            color: #yellow-300; /* Text color for dropdown items */
+            /* color: #yellow-300; Text color for dropdown items */
             padding: 0.75rem 1rem;
             text-decoration: none;
             display: block;
@@ -98,7 +98,7 @@
 
         .dropdown-menu a:hover {
             background-color: #0A1931; /* Even darker navy on hover */
-            color: #yellow-500;
+            /* color: #yellow-500; */
         }
     </style>
 </head>
@@ -112,11 +112,11 @@
         <nav class="container mx-auto flex justify-between items-center relative z-10"> <!-- z-10 to keep nav above canvas -->
             <!-- Logo and Text Container -->
             <div class="flex items-center"> <!-- Removed space-x-2 to manually control spacing -->
-                <!-- Pythosphere Full-Sphere Logo with Golden Outline -->
+                <!-- Pyosphere Full-Sphere Logo with Golden Outline -->
                 <svg id="pythosphere-icon" class="w-9 h-9 text-yellow-500" fill="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <circle cx="12" cy="12" r="10" fill="none" stroke="#FFD700" stroke-width="2"/> <!-- Changed to circle with golden outline -->
                 </svg>
-                <a id="pythosphere-text" href="#" class="text-2xl md:text-3xl font-pythosphere">Pythosphere</a>
+                <a id="pythosphere-text" href="#" class="text-2xl md:text-3xl font-pythosphere">Pyosphere</a>
             </div>
             <div class="hidden md:flex space-x-8">
                 <a href="#home" class="text-yellow-300 hover:text-yellow-500 font-medium transition duration-300">Home</a>
@@ -180,18 +180,18 @@
     <!-- About Us Section -->
     <section id="about" class="py-20 md:py-32 bg-[#102038]"> <!-- Deeper section background -->
         <div class="container mx-auto px-6 md:px-12">
-            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">About Pythosphere</h2>
+            <h2 class="text-3xl md:text-4xl font-bold text-center text-yellow-500 mb-12">About Pyosphere</h2>
             <div class="flex flex-col md:flex-row items-center justify-center gap-12">
                 <div class="md:w-1/2">
                     <p class="text-lg leading-relaxed mb-6 text-yellow-200">
-                        Pythosphere is a pioneering educational institution dedicated to providing comprehensive and in-depth training in <span class="font-semibold text-yellow-400">PYTHA</span>. Our mission is to empower students with the foundational knowledge and advanced skills necessary to excel in complex analytical and computational fields. We believe in fostering a learning environment that is both rigorous and supportive, ensuring every student reaches their full potential.
+                        Pyosphere is a pioneering educational institution dedicated to providing comprehensive and in-depth training in <span class="font-semibold text-yellow-400">PYTHA</span>. Our mission is to empower students with the foundational knowledge and advanced skills necessary to excel in complex analytical and computational fields. We believe in fostering a learning environment that is both rigorous and supportive, ensuring every student reaches their full potential.
                     </p>
                     <p class="text-lg leading-relaxed text-yellow-200">
                         Our curriculum is meticulously designed by industry experts and educators, focusing on practical application and real-world problem-solving. We are committed to delivering excellence through innovative teaching methodologies, personalized mentorship, and a vibrant community that encourages continuous growth and exploration.
                     </p>
                 </div>
                 <div class="md:w-1/2 flex justify-center">
-                    <img src="https://placehold.co/500x350/0A1931/FFD700?text=About+Us" alt="About Pythosphere" class="rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover"> <!-- More rounded, stronger shadow, glow -->
+                    <img src="https://placehold.co/500x350/0A1931/FFD700?text=About+Us" alt="About Pyosphere" class="rounded-2xl shadow-xl transform hover:scale-105 transition duration-300 ease-in-out glow-on-hover"> <!-- More rounded, stronger shadow, glow -->
                 </div>
             </div>
         </div>
@@ -268,7 +268,7 @@
                 </div>
                 <div class="md:w-1/2 order-1 md:order-2">
                     <p class="text-lg leading-relaxed mb-6 text-yellow-200">
-                        Ready to join Pythosphere and unlock your potential in PYTHA? Fill out our application form to get started. Our collaboration with the <span class="font-semibold text-yellow-400">Surabhi Module</span> for holistic learning.
+                        Ready to join Pyosphere and unlock your potential in PYTHA? Fill out our application form to get started. Our collaboration with the <span class="font-semibold text-yellow-400">Surabhi Module</span> for holistic learning.
                     </p>
                     <p class="text-lg leading-relaxed mb-6 text-yellow-200">
                         The application process is simple and designed to help us understand your aspirations and how we can best support your learning goals. We look forward to welcoming you to our community!
@@ -306,7 +306,7 @@
                     </div>
                 </form>
                 <div class="mt-12 text-center text-yellow-300">
-                    <p class="text-lg mb-2"><strong>Address:</strong> PYTHOSPHERE, 2nd Floor Surabhi Module, Vallathol Junction, Seaport-Airport road, Kakkanad, Kochi, India</p>
+                    <p class="text-lg mb-2"><strong>Address:</strong> Pyosphere, 2nd Floor Surabhi Module, Vallathol Junction, Seaport-Airport road, Kakkanad, Kochi, India</p>
                     <p class="text-lg mb-2"><strong>Phone:</strong> 7034464621</p>
                     <p class="text-lg"><strong>Email:</strong> info.pythosphere@gmail.com</p>
                 </div>
@@ -319,7 +319,7 @@
         <div class="container mx-auto text-center">
             <div class="flex flex-col md:flex-row justify-between items-center mb-6">
                 <div class="mb-4 md:mb-0">
-                    <h3 class="text-xl font-bold text-yellow-300">Pythosphere</h3>
+                    <h3 class="text-xl font-bold text-yellow-300">Pyosphere</h3>
                     <p class="text-yellow-400 text-sm">Empowering Minds with PYTHA</p>
                 </div>
                 <div class="flex space-x-6">
@@ -330,7 +330,7 @@
                 </div>
             </div>
             <hr class="border-[#1A2B4C] mb-6"> <!-- Darker navy border -->
-            <p class="text-yellow-500 text-sm">&copy; 2025 Pythosphere. All rights reserved. | In collaboration with Surabhi Module</p>
+            <p class="text-yellow-500 text-sm">&copy; 2025 Pyosphere. All rights reserved. | In collaboration with Surabhi Module</p>
         </div>
     </footer>
 
@@ -541,151 +541,87 @@
                 { radius: 30, color: 0xff0000, orbitRadius: 240, orbitSpeed: 0.005 }, // Increased radius and orbit
                 { radius: 40, color: 0x00ff00, orbitRadius: 360, orbitSpeed: 0.003 }, // Increased radius and orbit
                 { radius: 35, color: 0x0000ff, orbitRadius: 480, orbitSpeed: 0.002 }, // Increased radius and orbit
-                { radius: 25, color: 0x800080, orbitRadius: 600, orbitSpeed: 0.0015 } // Increased radius and orbit
+                { radius: 25, color: 0xffa500, orbitRadius: 600, orbitSpeed: 0.0015 }, // New planet
+                { radius: 45, color: 0x800080, orbitRadius: 720, orbitSpeed: 0.001 } // New planet
             ];
 
-            planetData.forEach(data => {
-                // Planet
+            planetData.forEach((data, index) => {
                 const planetGeometry = new THREE.SphereGeometry(data.radius, 16, 16);
-                const planetMaterial = new THREE.MeshPhongMaterial({
-                    color: data.color,
-                    specular: 0xAAAAAA,
-                    shininess: 50,
-                    transparent: true,
-                    opacity: 0.7 // Transparent planets
-                });
+                const planetMaterial = new THREE.MeshLambertMaterial({ color: data.color });
                 const planet = new THREE.Mesh(planetGeometry, planetMaterial);
-                planet.orbitRadius = data.orbitRadius;
-                planet.orbitSpeed = data.orbitSpeed;
-                planet.angle = Math.random() * Math.PI * 2; // Initial random position in orbit
-                planets.push(planet);
+
+                const orbitPathGeometry = new THREE.RingGeometry(data.orbitRadius - 1, data.orbitRadius + 1, 64);
+                const orbitPathMaterial = new THREE.MeshBasicMaterial({ color: 0x404040, side: THREE.DoubleSide });
+                const orbitPath = new THREE.Mesh(orbitPathGeometry, orbitPathMaterial);
+                orbitPath.rotation.x = Math.PI / 2; // Rotate to be flat on the XY plane
+                solarSystemGroup.add(orbitPath);
+
+                planets.push({
+                    mesh: planet,
+                    orbitRadius: data.orbitRadius,
+                    orbitSpeed: data.orbitSpeed,
+                    angle: Math.random() * Math.PI * 2 // Random starting angle
+                });
                 solarSystemGroup.add(planet);
-
-                // Orbit (LineLoop)
-                const orbitGeometry = new THREE.BufferGeometry();
-                const points = [];
-                const segments = 64;
-                for (let i = 0; i <= segments; i++) {
-                    const theta = (i / segments) * Math.PI * 2;
-                    points.push(new THREE.Vector3(data.orbitRadius * Math.cos(theta), 0, data.orbitRadius * Math.sin(theta)));
-                }
-                orbitGeometry.setFromPoints(points);
-                const orbitMaterial = new THREE.LineBasicMaterial({ color: 0xcccccc, transparent: true, opacity: 0.3 }); // Faint orbit lines
-                const orbit = new THREE.LineLoop(orbitGeometry, orbitMaterial);
-                solarSystemGroup.add(orbit);
             });
-
-            // Position the entire solar system group vertically
-            solarSystemGroup.position.y = 0; // Centered vertically relative to the new depth
 
             scene.add(solarSystemGroup);
 
             // Mouse interaction for rotation
-            document.addEventListener('mousemove', onDocumentMouseMove, false);
-            document.addEventListener('touchmove', onDocumentTouchMove, false);
-
-            // Initial resize
-            onSolarSystemResize();
-        }
-
-        function onSolarSystemResize() {
-            const container = document.getElementById('home');
-            if (camera && renderer && container) {
-                camera.aspect = container.offsetWidth / container.offsetHeight;
-                camera.updateProjectionMatrix();
-                renderer.setSize(container.offsetWidth, container.offsetHeight);
-                // Keep centered vertically on resize
-                solarSystemGroup.position.y = 0;
-            }
+            document.addEventListener('mousemove', onDocumentMouseMove);
+            window.addEventListener('resize', onWindowResize);
         }
 
         function onDocumentMouseMove(event) {
-            mouseX = (event.clientX - windowHalfX);
-            mouseY = (event.clientY - windowHalfY);
+            // Reduced sensitivity for slower, smoother tilting
+            mouseX = (event.clientX - windowHalfX) * 0.0001;
+            mouseY = (event.clientY - windowHalfY) * 0.0001;
         }
 
-        function onDocumentTouchMove(event) {
-            if (event.touches.length === 1) {
-                event.preventDefault();
-                mouseX = (event.touches[0].pageX - windowHalfX);
-                mouseY = (event.touches[0].pageY - windowHalfY);
-            }
+        function onWindowResize() {
+            const container = document.getElementById('home');
+            camera.aspect = container.offsetWidth / container.offsetHeight;
+            camera.updateProjectionMatrix();
+            renderer.setSize(container.offsetWidth, container.offsetHeight);
         }
 
         function animateSolarSystem() {
             requestAnimationFrame(animateSolarSystem);
 
-            // Smoothly interpolate target rotations based on mouse position
-            targetRotationX += ( mouseX - targetRotationX ) * 0.00005;
-            targetRotationY += ( mouseY - targetRotationY ) * 0.00005;
+            // Smoothly interpolate towards the target rotation
+            targetRotationX += (mouseX - targetRotationX) * 0.02;
+            targetRotationY += (mouseY - targetRotationY) * 0.02;
 
-            // Apply overall rotation to the solar system group
-            // For top-down view, primarily rotate around Y-axis (vertical axis)
-            solarSystemGroup.rotation.y += 0.0005; // Slow continuous rotation
-            // Allow subtle tilt with mouse for X and Z axes
-            solarSystemGroup.rotation.x = (targetRotationY * 0.0005);
-            solarSystemGroup.rotation.z = (targetRotationX * 0.0005);
+            solarSystemGroup.rotation.y += 0.001; // Continuous slow rotation for the whole system
+            solarSystemGroup.rotation.x = targetRotationY;
+            solarSystemGroup.rotation.y = targetRotationX;
 
 
-            // Animate planets
             planets.forEach(planet => {
                 planet.angle += planet.orbitSpeed;
-                planet.position.x = planet.orbitRadius * Math.cos(planet.angle);
-                planet.position.z = planet.orbitRadius * Math.sin(planet.angle);
-                planet.rotation.y += 0.01; // Self-rotation for planets
+                planet.mesh.position.x = planet.orbitRadius * Math.cos(planet.angle);
+                planet.mesh.position.z = planet.orbitRadius * Math.sin(planet.angle);
+                planet.mesh.rotation.y += 0.01; // Rotate individual planets
             });
 
             renderer.render(scene, camera);
         }
 
+        // Initialize and animate
+        window.addEventListener('load', () => {
+            const headerParticles = createParticleSystem('header-canvas', document.querySelector('header'));
+            headerParticles.resize();
+            headerParticles.animate();
 
-        // Initialize and start animations when window loads
-        window.onload = function() {
-            const headerParticleSystem = createParticleSystem('header-canvas', mainHeader);
-            headerParticleSystem.resize();
-            headerParticleSystem.animate();
+            initSolarSystem();
+            animateSolarSystem();
 
-            initSolarSystem(); // Initialize solar system instead of globe
-            animateSolarSystem(); // Animate solar system
-        };
-
-        // Resize canvases when window is resized
-        window.addEventListener('resize', () => {
-            const headerParticleSystem = createParticleSystem('header-canvas', mainHeader); // Re-create to ensure correct context
-            headerParticleSystem.resize(); // Resize header particles
-
-            onSolarSystemResize(); // Resize Three.js solar system
+            // Re-render Three.js scene on window resize
+            window.addEventListener('resize', () => {
+                headerParticles.resize();
+                onWindowResize(); // Call Three.js resize handler
+            });
         });
-
-
-        // Logo hover effect
-        const pythosphereIcon = document.getElementById('pythosphere-icon');
-        const pythosphereText = document.getElementById('pythosphere-text');
-        const initialOffset = 60; // Increased to 60 for smoother and more backward movement
-
-        if (pythosphereIcon && pythosphereText) {
-            // Set initial position of the icon to be 'initialOffset' pixels to the left of the text's start
-            pythosphereIcon.style.transform = `translateX(-${initialOffset}px)`;
-
-            // Adjust the text's margin to compensate for the icon's negative transform,
-            // effectively placing the text 'initialOffset' pixels after the icon's visual start.
-            // pythosphereIcon.offsetWidth is used to account for the icon's own width.
-            pythosphereText.style.marginLeft = `${pythosphereIcon.offsetWidth + initialOffset}px`;
-
-
-            pythosphereIcon.addEventListener('mouseenter', () => {
-                // Calculate the width of the text dynamically
-                const textWidth = pythosphereText.offsetWidth;
-                // On hover, move the icon to the right by the text's width plus the initialOffset.
-                // This places the icon 'initialOffset' pixels after the end of the text.
-                pythosphereIcon.style.transform = `translateX(${textWidth + initialOffset}px)`;
-            });
-
-            pythosphereIcon.addEventListener('mouseleave', () => {
-                // On mouse leave, return the icon to its initial negative offset.
-                pythosphereIcon.style.transform = `translateX(-${initialOffset}px)`;
-            });
-        }
     </script>
 </body>
 </html>
